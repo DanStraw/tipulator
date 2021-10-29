@@ -1,33 +1,47 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import store from '../../store';
 import BillTotal from '../BillTotal';
 import { render } from '@testing-library/react-native';
+import renderer from 'react-test-renderer';
 
+const mapState = state => {
+  const { totalBill } = state;
+  return { totalBill };
+}
 
 describe('<BillTotal /> component ', () => {
   test('exists and text value defaults to $0.00', async () => {
-    const component = (
+    const tree = renderer.create(
       <Provider store={store}>
         <BillTotal />
       </Provider>
-    );
-    const { findByText } = render(component);
-    const newBillTotal = await findByText('$0.00');
-    expect(newBillTotal).toBeTruthy();
+    )
+      .toJSON();
+
+    console.log('tree', tree);
+    expect(tree).toMatchSnapshot();
+    // const { findByText } = render(component);
+    // const newBillTotal = await findByText('$0.00');
+    // expect(newBillTotal).toBeTruthy();
   });
 
   test('get component by testID', () => {
-
-    const component = (
+    const component = renderer.create(
       <Provider store={store}>
-        <BillTotal totalBill={45} />
+        <BillTotal totalBill="45.00" />
       </Provider>
-    )
+    );
 
-    const { getAllByTestId } = render(component);
-    const newBillTotal = getAllByTestId('total-bill');
+    // connect(mapState)(BillTotal);
 
-    expect(newBillTotal.length).toBe(1);
+    let tree = component.toJSON();
+    console.log('new tree:', tree);
+    expect(tree).toMatchSnapshot();
+
+    // const { getAllByTestId } = render(component);
+    // const newBillTotal = getAllByTestId('total-bill');
+
+    // expect(newBillTotal.length).toBe(1);
   })
 })

@@ -21,7 +21,6 @@ const BillInput = props => {
     props.manual(value);
   }
   const blurEventHandler = (event) => {
-    console.log('blur:', event);
     props.format(event.target.value);
   }
 
@@ -31,7 +30,8 @@ const BillInput = props => {
       keyboardType='numeric'
       onChangeText={inputChangeEventHandler}
       onBlur={blurEventHandler}
-      placeHolder="Input Bill Here"
+      placeHolder="0.00"
+      placeholderTextColor="#ff00ff"
       style={styles.input}
     />
   )
@@ -39,8 +39,9 @@ const BillInput = props => {
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: '#808080',
-    color: '#FF0000'
+    backgroundColor: "#ECECEC",
+    color: '#FF0000',
+    textAlign: 'right'
   }
 })
 

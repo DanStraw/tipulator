@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BillTotal /> component  exists and text value defaults to $0.00 1`] = `
+<Text
+  testID="total-bill"
+  total-bill="0.00"
+>
+  $0.00
+</Text>
+`;
+
+exports[`<BillTotal /> component  get component by testID 1`] = `
+<Text
+  testID="total-bill"
+  total-bill="0.00"
+>
+  $0.00
+</Text>
+`;

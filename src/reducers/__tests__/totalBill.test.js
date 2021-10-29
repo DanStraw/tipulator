@@ -3,7 +3,7 @@ import reducer from '../totalBill';
 
 describe('total bill reducer test', () => {
   test('should return initial state', () => {
-    expect(reducer(undefined, {})).toEqual(0);
+    expect(reducer(undefined, {})).toEqual("");
   });
   test('should increment by 1 dollar', () => {
     expect(reducer('5.00', { type: 'INCREMENT_DOLLAR' })).toBe('6.00');
@@ -17,7 +17,10 @@ describe('total bill reducer test', () => {
   test('should decrement by 1 %', () => {
     expect(reducer('5.00', { type: 'DECREMENT_PERCENT' })).toBe('4.95');
   });
-  test('should return entered number', () => {
-    expect(reducer('5.00', { type: 'MANUAL', text: '4.1' })).toBe('4.1');
+  test('should return entered number but to two decimals', () => {
+    expect(reducer('5.00', { type: 'MANUAL', text: '4.1' })).toBe('4.10');
   });
+  test('should add two decimals to integer', () => {
+    expect(reducer('500', { type: 'FORMAT' })).toBe('500.00');
+  })
 })

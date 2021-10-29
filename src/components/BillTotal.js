@@ -11,12 +11,12 @@ const BillTotal = props => {
   const { totalBill } = props;
   if (!totalBill) {
     return (
-      <Text testID="total-bill">$0.00</Text>
+      <Text testID="total-bill" total-bill="0.00">$0.00</Text>
     )
   }
 
   return (
-    <Text testID="total-bill">${totalBill}</Text>
+    <Text testID="total-bill" total-bill={totalBill}>${totalBill}</Text>
   )
 }
 
