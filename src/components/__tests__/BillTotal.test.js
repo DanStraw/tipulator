@@ -5,12 +5,7 @@ import BillTotal from '../BillTotal';
 import { render } from '@testing-library/react-native';
 import renderer from 'react-test-renderer';
 
-const mapState = state => {
-  const { totalBill } = state;
-  return { totalBill };
-}
-
-describe('<BillTotal /> component ', () => {
+describe('<BillTotal /> component no prop', () => {
   test('exists and text value defaults to $0.00', async () => {
     const tree = renderer.create(
       <Provider store={store}>
@@ -18,30 +13,22 @@ describe('<BillTotal /> component ', () => {
       </Provider>
     )
       .toJSON();
-
-    console.log('tree', tree);
-    expect(tree).toMatchSnapshot();
-    // const { findByText } = render(component);
-    // const newBillTotal = await findByText('$0.00');
-    // expect(newBillTotal).toBeTruthy();
+    expect(tree.children[0].children[0]).toBe("$0.00");
   });
 
-  test('get component by testID', () => {
-    const component = renderer.create(
-      <Provider store={store}>
-        <BillTotal totalBill="45.00" />
-      </Provider>
-    );
+  describe.skip('Bill total Component with prop', () => {
+    test('<BillTotal /> component with prop', () => {
+      const component = renderer.create(
+        <Provider store={store}>
+          <BillTotal />
+        </Provider>
+      );
 
-    // connect(mapState)(BillTotal);
+      // store.dispatch({ type: 'MANUAL', text: '45.00' });
 
-    let tree = component.toJSON();
-    console.log('new tree:', tree);
-    expect(tree).toMatchSnapshot();
-
-    // const { getAllByTestId } = render(component);
-    // const newBillTotal = getAllByTestId('total-bill');
-
-    // expect(newBillTotal.length).toBe(1);
+      let tree = component.toJSON();
+      // console.log('cp:', tree);
+      expect(tree.children).toContain('45.00');
+    })
   })
 })

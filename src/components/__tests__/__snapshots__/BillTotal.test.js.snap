@@ -17,3 +17,21 @@ exports[`<BillTotal /> component  get component by testID 1`] = `
   $0.00
 </Text>
 `;
+
+exports[`<BillTotal /> component no prop <BillTotal /> component with prop 1`] = `
+<Text
+  testID="total-bill"
+  total-bill="0.00"
+>
+  $0.00
+</Text>
+`;
+
+exports[`<BillTotal /> component no prop exists and text value defaults to $0.00 1`] = `
+<Text
+  testID="total-bill"
+  total-bill="0.00"
+>
+  $0.00
+</Text>
+`;

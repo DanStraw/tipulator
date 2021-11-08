@@ -1,5 +1,5 @@
 import { expect, describe, test } from '@jest/globals';
-import { isValidCurrency, dropLeadingZeros, formatDecimals, formatCommas, removeCommas } from '../currency';
+import { isValidCurrency, dropLeadingZeros, formatDecimals, formatCommas, removeCommas, formatCurrency } from '../currency';
 
 describe('currency format tests', () => {
   const pass = ['5', '5.00', '6,000', '6,000.00', '70000', '600', , '5.0'];
@@ -41,7 +41,19 @@ describe('commas format', () => {
   const numberSets = [["5", "5"], ["600", "600"], ["7654", "7,654"], ["800,000,0", "8,000,000"]];
   numberSets.forEach(numberSet => {
     test(`${numberSet[0]} should output ${numberSet[1]}`, () => {
-      expect(formatCommas(removeCommas(numberSet[0]))).toBe(numberSet[1]);
+      const commasRemoved = removeCommas(numberSet[0]);
+      const commasReformatted = formatCommas(commasRemoved);
+      expect(commasReformatted).toBe(numberSet[1]);
     })
   })
 });
+
+
+describe('formattedCurrency', () => {
+  const numSets = [['00.01', '0.01'], ['2000', '20.00'], ['300000', '3,000.00']];
+  numSets.forEach(numberSet => {
+    test(`${numberSet[0]} should output ${numberSet[1]}`, () => {
+      expect(formatCurrency(numberSet[0])).toBe(numberSet[1]);
+    })
+  })
+})
