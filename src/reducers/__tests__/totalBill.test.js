@@ -68,7 +68,7 @@ describe('total percentage reducer tests', () => {
       expect(reducer("123.548", {
         type: "totalBill/FORMAT"
       }))
-        .toEqual("123.55");
+        .toEqual("1,235.48");
     })
   });
 
@@ -89,7 +89,7 @@ describe('total percentage reducer tests', () => {
         type: "totalBill/AUTO_UPDATE",
         data: {
           preTipTotal: "120.00",
-          tipPercentage: "1.50"
+          tipPercentage: "1.50" //updates to 15% when decimal moved
         }
       }))
         .toEqual("138.00");

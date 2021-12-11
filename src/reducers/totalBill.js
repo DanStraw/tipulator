@@ -18,7 +18,7 @@ export default (state = "", action) => {
       const newStateFormatted = formatCurrency(newState);
       return isValidCurrency(newStateFormatted) ? newStateFormatted : oldState;
     case 'totalBill/FORMAT':
-      return state === "" ? "0.00" : state;
+      return state === "" ? "0.00" : formatCurrency(state);
     case 'totalBill/AUTO_UPDATE':
 
       const { preTipTotal, tipPercentage } = action.data;
@@ -26,10 +26,8 @@ export default (state = "", action) => {
       if (!isValidPercent(tipPercentage.toString())) {
         return state;
       }
-
       const formattedPercent = formatPercentageForParse(tipPercentage);
       const formattedCurrency = formatCurrencyForParse(preTipTotal);
-
       if (isValidCurrency(formattedCurrency) && isValidPercent(formattedPercent)) {
         const parsedTotalBill = parseFloat(formattedCurrency) + (parseFloat(formattedCurrency) * parseFloat(formattedPercent) / 100);
         return formatCurrency(parsedTotalBill.toFixed(2).toString());

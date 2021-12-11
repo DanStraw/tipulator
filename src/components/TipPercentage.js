@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { TextInput, View, Text, StyleSheet } from 'react-native';
-import { TIP_PERCENTAGE_UPDATE, TOTAL_BILL_AUTO_UPDATE, TIP_TOTAL_AUTO_UPDATE } from './actions';
+import { TIP_PERCENTAGE_UPDATE, TOTAL_BILL_AUTO_UPDATE, TIP_TOTAL_AUTO_UPDATE, SHARES_VIEW_TIP_PERCENTAGE_CHANGE } from './actions';
 
 const mapStateToProps = state => {
   const { tipPercentage, preTipTotal } = state;
@@ -12,7 +12,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateTipPercentage: val => dispatch({ type: TIP_PERCENTAGE_UPDATE, text: val }),
     updateBillTotal: val => dispatch({ type: TOTAL_BILL_AUTO_UPDATE, data: { ...val } }),
-    updateTipTotal: val => dispatch({ type: TIP_TOTAL_AUTO_UPDATE, data: { ...val } })
+    updateTipTotal: val => dispatch({ type: TIP_TOTAL_AUTO_UPDATE, data: { ...val } }),
+    updateShares: val => dispatch({ type: SHARES_VIEW_TIP_PERCENTAGE_CHANGE, data: { ...val } })
   }
 }
 
@@ -20,10 +21,10 @@ const TipPercentage = props => {
   const { preTipTotal } = props;
 
   const inputChangeEventHandler = (value) => {
-    console.log('val:', value);
     props.updateTipPercentage(value);
     props.updateBillTotal({ tipPercentage: value, preTipTotal });
     props.updateTipTotal({ tipPercentage: value, preTipTotal });
+    props.updateShares({ tipPercentage: value, preTipTotal });
   }
 
   return (

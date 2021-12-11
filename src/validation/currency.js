@@ -5,6 +5,11 @@ const isValidCurrency = string => {
   return condition.test(string);
 }
 
+const isValidNegativeCurrency = string => {
+  const condition = new RegExp(/^\-?(\d+|\d{1,3}(,\d{3})*)(\.\d{0,2})?$/, "g");
+  return condition.test(string);
+}
+
 const dropLeadingZeros = (string) => {
   if (string.length > 4) {
     return string.charAt(0) == '0' ? dropLeadingZeros(string.substring(1)) : string;
@@ -13,6 +18,9 @@ const dropLeadingZeros = (string) => {
 }
 
 const formatDecimals = (string) => {
+  if (typeof string === "number") {
+    console.log('type:', typeof string, 'st:', string);
+  }
   if (string.length < 1) {
     return "0.00";
   } else if (string.length === 1) {
@@ -56,7 +64,18 @@ const formatCurrency = function (initialState) {
   return isValidCurrency(formattedCurrency) ? formattedCurrency : initialState;
 }
 
+const formatCurrencyNegativeAllowable = function (initialState) {
+  const newStateFormatted = formatDecimals(initialState);
+  const droppedZeroes = dropLeadingZeros(newStateFormatted);
+  const [integers, decimals] = splitAtDecimal(droppedZeroes);
+  const integersNoCommas = removeCommas(integers);
+  const integersReformattedCommas = formatCommas(integersNoCommas);
+  const formattedCurrency = joinIntegersToDecimals([integersReformattedCommas, decimals]);
+  return isValidNegativeCurrency(formattedCurrency) ? formattedCurrency : initialState;
+}
+
 const formatCurrencyForParse = function (initialState) {
+  // console.log('is parse:', initialState);
   const newStateFormatted = formatDecimals(initialState);
   const droppedZeroes = dropLeadingZeros(newStateFormatted);
   const [integers, decimals] = splitAtDecimal(droppedZeroes);
@@ -66,11 +85,13 @@ const formatCurrencyForParse = function (initialState) {
   return isValidCurrency(formattedCurrency) ? formattedCurrency : initialState;
 }
 
-export { 
-  isValidCurrency, 
-  dropLeadingZeros, 
-  formatDecimals, 
-  removeCommas, 
-  formatCurrency, 
-  formatCurrencyForParse 
+export {
+  isValidCurrency,
+  isValidNegativeCurrency,
+  dropLeadingZeros,
+  formatDecimals,
+  removeCommas,
+  formatCurrency,
+  formatCurrencyNegativeAllowable,
+  formatCurrencyForParse
 };

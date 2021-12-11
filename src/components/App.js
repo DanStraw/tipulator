@@ -8,6 +8,7 @@ import BillInput from './BillInput';
 import TipTotal from './TipTotal';
 import PreTipTotalInput from './PreTipTotalInput';
 import TipPercentage from './TipPercentage';
+import SharesView from './SharesView';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <TipTotal />
         <BillTotal />
         <BillInput />
+        <SharesView />
         <StatusBar style="auto" />
       </View>
     </Provider>
