@@ -36,7 +36,7 @@ describe('Tip reducer dummy', () => {
         type: 'tipTotal/AUTO_UPTATE', data: {
           preTipTotal: "100.00", tipPercentage: "-2000.0"
         }
-      })).toBe("-2000.00");
+      })).toBe("-2,000.00");
     });
 
     test('decmial will be added before final digit', () => {

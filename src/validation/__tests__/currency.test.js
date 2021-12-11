@@ -1,5 +1,6 @@
 import { expect, describe, test } from '@jest/globals';
-import { isValidCurrency, dropLeadingZeros, formatDecimals, formatCommas, removeCommas, formatCurrency } from '../currency';
+import { isValidCurrency, dropLeadingZeros, formatDecimals, removeCommas, formatCurrency } from '../currency';
+import { formatCommas } from '../numberString';
 
 describe('currency format tests', () => {
   const pass = ['5', '5.00', '6,000', '6,000.00', '70000', '600', , '5.0'];

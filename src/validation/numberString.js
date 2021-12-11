@@ -10,7 +10,7 @@ const formatCommas = (string) => {
   return string.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-module.exports = {
-isValidNumberString,
-formatCommas
+export {
+  isValidNumberString,
+  formatCommas
 }

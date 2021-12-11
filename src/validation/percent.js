@@ -44,7 +44,12 @@ const formatPercentage = number => {
 }
 
 const formatPercentageForParse = numString => {
-  return numString.split(",").join("");
+  // console.log('ns:', numString);
+  let number = numString.split(".").join('');
+  number = number.split(",").join("");
+  number = number.substring(0, number.length - 1) + "." + number.substring(number.length - 1);
+  // console.log('numString:', numString, '\nnumber:', number);
+  return number;
 }
 
 export {
