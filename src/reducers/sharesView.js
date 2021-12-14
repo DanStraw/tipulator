@@ -1,5 +1,5 @@
 import { formatCurrencyForParse, formatCurrency } from '../validation/currency';
-import { formatPercentageForParse } from '../validation/percent';
+import { formatPercentageForParse, formatPercentage } from '../validation/percent';
 
 const defaultState = {
   autoShareAmount: 0,
@@ -43,6 +43,19 @@ export default (state = defaultState, action) => {
       const newShares = [...state.shares, newShare];
       const newState = { autoShareAmount: state.autoShareAmount, shares: newShares };
       return setState(newState, formatCurrencyForParse(action.data.totalBill));
+
+    case 'sharesView/resetShares':
+      console.log('reset');
+      const rsBT = parseFloat(formatCurrencyForParse(action.data.totalBill));
+      let rsState = state;
+      const rsASA = (rsBT / rsState.shares.length);
+      rsState.autoShareAmount = rsASA;
+      rsState.shares.forEach(share => {
+        share.isManual = false;
+        share.shareAmount = formatCurrency(rsASA);
+        share.percentTotal = formatPercentage((1 / rsState.shares.length) * 100);
+      })
+      return { ...rsState };
 
     case 'sharesView/updateAutoShareAmount':
       //TEST THIS WITH MANUAL SHARES

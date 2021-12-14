@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { View, Text, Button } from 'react-native';
 import { SHARE_UPDATE_MANUAL_SHARE, SHARES_VIEW_MANUAL_UPDATE } from './actions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faAngleUp, faAngleDown, faDollarSign, faPercent } from '@fortawesome/free-solid-svg-icons';
+import { faAngleUp, faAngleDown, faAngleDoubleUp, faAngleDoubleDown, faDollarSign, faPercent } from '@fortawesome/free-solid-svg-icons';
 
 const mapStateToProps = (state) => {
   // console.log('share state - sv:', state)
@@ -12,7 +12,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateManualShareAmount: val => dispatch({ type: SHARES_VIEW_MANUAL_UPDATE, data: { ...val } })
+    updateManualShareAmount: val => dispatch({ type: SHARES_VIEW_MANUAL_UPDATE, data: { ...val } }),
+    resetShares: val => dispatch
   }
 }
 
@@ -42,47 +43,97 @@ const Share = props => {
     <View style={styles.shareViewOuterLayout}>
 
       <View style={styles.buttonLayout}>
-        <Button
-          onPress={() => buttonPressHandler(1, 'dollar')}
-          color={styles.incrementButton.color}
-          style={styles.incrementButton}
-          title="Up">
-        </Button>
 
-        {/* Button Title - <FontAwesomeIcon icon={faAngleUp} /> */}
+        <View style={styles.buttonSet}>
+          <View style={styles.button}>
+            <Button
+              onPress={() => buttonPressHandler(1, 'dollar')}
+              color={styles.incrementButton.color}
+              style={styles.incrementButton}
+              title={<FontAwesomeIcon icon={faAngleDoubleUp} />}>
+            </Button>
+          </View>
+          <View style={styles.button}>
+            <Button
+              onPress={() => buttonPressHandler(0.01, 'dollar')}
+              color={styles.incrementButton.color}
+              style={styles.incrementButton}
+              title={<FontAwesomeIcon icon={faAngleUp} />}>
+            </Button>
+          </View>
 
-        {/* <View><FontAwesomeIcon icon={faDollarSign} /> </View> */}
+        </View>
+
+        <View style={styles.changeTypeSymbol}><FontAwesomeIcon icon={faDollarSign} /> </View>
         <View style={styles.decrementButton}>
-          <Button
+          <View style={styles.buttonSet}>
+            <View style={styles.button}>
+              <Button
 
-            onPress={() => buttonPressHandler(-1, 'dollar')}
-            color={styles.incrementButton.color}
-            style={styles.icon}
-            title="down">
-          </Button>
+                onPress={() => buttonPressHandler(-1, 'dollar')}
+                color={styles.decrementButton.color}
+                style={styles.decrementButton}
+                title={<FontAwesomeIcon icon={faAngleDoubleDown} />}>
+              </Button>
+            </View>
+            <View style={styles.buton}>
+              <Button
 
-          {/* Button Title - <FontAwesomeIcon icon={faAngleDown}  */}
-
+                onPress={() => buttonPressHandler(-0.01, 'dollar')}
+                color={styles.decrementButton.color}
+                style={styles.decrementButton}
+                title={<FontAwesomeIcon icon={faAngleDown} />}>
+              </Button>
+            </View>
+          </View>
         </View>
       </View>
 
       <View>
-        <Text>Share {shareIndex + 1}: {shareAmount} - {percentTotal}%</Text>
+        <Text style={{ fontWeight: 'bold' }}>Share {shareIndex + 1}</Text>
+        <Text>${shareAmount}</Text>
+        <Text>{percentTotal}%</Text>
       </View>
 
       <View style={styles.buttonLayout}>
-        <Button
-          color={styles.incrementButtonColor.color}
-          onPress={() => buttonPressHandler(0.1, 'percent')}
-          style={styles.incrementButton}
-          title="Up" >
-        </Button>
-        {/* <View><FontAwesomeIcon icon={faPercent} /> </View> */}
-        <View style={styles.decrementButton}>
-          <Button title="down"
-            onPress={() => buttonPressHandler(-0.1, 'percent')}>
+        <View style={styles.buttonSet}>
 
-          </Button>
+          <View style={styles.button}>
+            <Button
+              color={styles.incrementButton.color}
+              onPress={() => buttonPressHandler(1.0, 'percent')}
+              style={styles.incrementButton}
+              title={<FontAwesomeIcon icon={faAngleDoubleUp} />} >
+            </Button>
+          </View>
+          <View style={styles.button}>
+            <Button
+              color={styles.incrementButton.color}
+              title={<FontAwesomeIcon icon={faAngleUp} />}
+              style={styles.incrementButton}
+              onPress={() => buttonPressHandler(0.1, 'percent')}>
+            </Button>
+          </View>
+        </View>
+        <View style={styles.changeTypeSymbol}><FontAwesomeIcon icon={faPercent} /> </View>
+
+        <View style={styles.buttonSet}>
+          <View style={styles.button}>
+            <Button
+              color={styles.decrementButton.color}
+              onPress={() => buttonPressHandler(-1.0, 'percent')}
+              style={styles.decrementButton}
+              title={<FontAwesomeIcon icon={faAngleDoubleDown} />} >
+            </Button>
+          </View>
+          <View style={styles.button}>
+            <Button
+              color={styles.decrementButton.color}
+              onPress={() => buttonPressHandler(-0.1, 'percent')}
+              style={styles.decrementButton}
+              title={<FontAwesomeIcon icon={faAngleDown} />} >
+            </Button>
+          </View>
         </View>
       </View>
     </View>
@@ -91,11 +142,12 @@ const Share = props => {
 
 const styles = {
   incrementButton: {
-    marginBottom: 5,
-    color: 'lightgrey',
+    color: 'forestgreen',
+    border: '2px black solid'
   },
   decrementButton: {
-    opacity: 0.8
+    opacity: 0.8,
+    color: 'maroon'
   },
   incrementButtonColor: {
     marginBottom: 5,
@@ -104,18 +156,25 @@ const styles = {
   icon: {
     color: "white",
   },
-  test: {
-    color: 'green'
-  },
   shareViewOuterLayout: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     border: '1px black solid'
   },
   buttonLayout: {
-    margin: 5
+    marginBottom: 5
+  },
+  buttonSet: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  button: {
+    marginRight: '2px'
+  },
+  changeTypeSymbol: {
+    alignItems: 'center'
   }
 }
 
