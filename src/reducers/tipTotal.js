@@ -18,7 +18,6 @@ export default (state = "", action) => {
         const formattedCurrency = formatCurrencyForParse(preTipTotal);
         if (isValidCurrency(formattedCurrency) && isValidPercent(formattedPercent)) {
           const parsedTipTotal = (parseFloat(formatCurrencyForParse(formattedCurrency)) * parseFloat(formatPercentageForParse(formattedPercent)) / 100);
-          // console.log('formattedPercent', formattedPercent, '\nptt:', parsedTipTotal);
           return formatCurrencyNegativeAllowable(parsedTipTotal.toFixed(2).toString());
         }
       }

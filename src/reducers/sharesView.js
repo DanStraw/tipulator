@@ -42,19 +42,47 @@ export default (state = defaultState, action) => {
       }
       const newShares = [...state.shares, newShare];
       const newState = { autoShareAmount: state.autoShareAmount, shares: newShares };
+
       return setState(newState, formatCurrencyForParse(action.data.totalBill));
 
+    case 'sharesView/deleteShare':
+      const dSDeleteIndex = action.data.shareIndex;
+      let dsShares = state.shares;
+      dsShares.splice(dSDeleteIndex, 1);
+      let allManual = true;
+      dsShares.forEach(share => {
+        if (!share.isManual) {
+          allManual = false;
+        }
+      });
+      if (allManual) {
+        dsShares[dsShares.length - 1].isManual = false;
+      }
+
+      const dsBillTotal = formatCurrencyForParse(action.data.totalBill);
+      const dsState = { autoShareAmount: state.autoShareAmount, shares: dsShares };
+      const dsUpdatedState = setState(dsState, dsBillTotal);
+      return { ...dsUpdatedState };
+
+    case 'sharesView/resetShare':
+      const index_shareToReset = action.data.shareIndex;
+      let rs1_updatedState = state;
+      rs1_updatedState.shares[index_shareToReset].isManual = false;
+      const rs1_newState = setState(rs1_updatedState, formatCurrencyForParse(action.data.totalBill));
+      //  console.log('rsState:', rs1_newState);
+      return { ...rs1_newState };
+
     case 'sharesView/resetShares':
-      console.log('reset');
       const rsBT = parseFloat(formatCurrencyForParse(action.data.totalBill));
       let rsState = state;
       const rsASA = (rsBT / rsState.shares.length);
-      rsState.autoShareAmount = rsASA;
+      rsState.autoShareAmount = formatCurrency(rsASA);
       rsState.shares.forEach(share => {
         share.isManual = false;
         share.shareAmount = formatCurrency(rsASA);
         share.percentTotal = formatPercentage((1 / rsState.shares.length) * 100);
       })
+
       return { ...rsState };
 
     case 'sharesView/updateAutoShareAmount':
@@ -66,6 +94,7 @@ export default (state = defaultState, action) => {
       return setState(state, billTotal);
 
     case 'sharesView/updateFromNewBillTotal':
+      console.log('shares length:', state.shares.length);
       if (state.shares.length === 1) return state;
       const unbt_billTotal = formatCurrencyForParse(action.data.totalBill);
 
@@ -80,7 +109,6 @@ export default (state = defaultState, action) => {
 
       return setState(state, tpc_billTotal);
     case 'sharesView/updateManualShare':
-      console.log('ad:', action.data);
       const ums_preTipTotal = action.data.preTipTotal;
       const ums_tipPercentage = action.data.tipPercentage;
       const ums_shareIndex = action.data.shareIndex;

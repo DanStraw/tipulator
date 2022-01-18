@@ -19,7 +19,6 @@ const dropLeadingZeros = (string) => {
 
 const formatDecimals = (string) => {
   if (typeof string === "number") {
-    console.log('type:', typeof string, 'st:', string);
     string = string.toFixed(2).toString();
   }
   if (string.length < 1) {
@@ -76,7 +75,6 @@ const formatCurrencyNegativeAllowable = function (initialState) {
 }
 
 const formatCurrencyForParse = function (initialState) {
-  console.log('is parse:', initialState);
   const newStateFormatted = formatDecimals(initialState);
   const droppedZeroes = dropLeadingZeros(newStateFormatted);
   const [integers, decimals] = splitAtDecimal(droppedZeroes);

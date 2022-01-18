@@ -70,5 +70,14 @@ describe('Tip reducer dummy', () => {
         }
       })).toBe("10.00");
     });
+
+    test('tip total calc from total bill update', () => {
+      expect(reducer("15.00", {
+        type: 'tipTotal/BILL_UPDATE', data: {
+          billTotalNum: '118.00',
+          preTipTotalNum: '100.00'
+        }
+      })).toBe('18.00');
+    });
   })
 })
