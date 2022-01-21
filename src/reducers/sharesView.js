@@ -69,7 +69,6 @@ export default (state = defaultState, action) => {
       let rs1_updatedState = state;
       rs1_updatedState.shares[index_shareToReset].isManual = false;
       const rs1_newState = setState(rs1_updatedState, formatCurrencyForParse(action.data.totalBill));
-      //  console.log('rsState:', rs1_newState);
       return { ...rs1_newState };
 
     case 'sharesView/resetShares':
@@ -94,7 +93,6 @@ export default (state = defaultState, action) => {
       return setState(state, billTotal);
 
     case 'sharesView/updateFromNewBillTotal':
-      console.log('shares length:', state.shares.length);
       if (state.shares.length === 1) return state;
       const unbt_billTotal = formatCurrencyForParse(action.data.totalBill);
 
