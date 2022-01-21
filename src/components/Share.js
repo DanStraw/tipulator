@@ -1,24 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Button } from 'react-native';
-import { SHARE_UPDATE_MANUAL_SHARE, SHARES_VIEW_MANUAL_UPDATE } from './actions';
+import { SHARES_VIEW_DELETE_SHARE, SHARES_VIEW_MANUAL_UPDATE, SHARES_VIEW_RESET_SHARE } from './actions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faAngleUp, faAngleDown, faDollarSign, faPercent } from '@fortawesome/free-solid-svg-icons';
+import { faAngleUp, faAngleDown, faAngleDoubleUp, faAngleDoubleDown, faDollarSign, faPercent, faUndo, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const mapStateToProps = (state) => {
-  // console.log('share state - sv:', state)
   return state;
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateManualShareAmount: val => dispatch({ type: SHARES_VIEW_MANUAL_UPDATE, data: { ...val } })
+    updateManualShareAmount: val => dispatch({ type: SHARES_VIEW_MANUAL_UPDATE, data: { ...val } }),
+    deleteShare: val => dispatch({ type: SHARES_VIEW_DELETE_SHARE, data: val }),
+    resetShare: val => dispatch({ type: SHARES_VIEW_RESET_SHARE, data: val })
   }
 }
 
 const Share = props => {
-  const { sharesView, shareIndex, preTipTotal, tipPercentage } = props;
+  const { sharesView, shareIndex, preTipTotal, tipPercentage, totalBill } = props;
   const { shareAmount, percentTotal } = sharesView.shares[shareIndex];
+
+  let autoShareCount = 0;
+  sharesView.shares.forEach(share => {
+    autoShareCount = share.isManual ? autoShareCount : autoShareCount + 1;
+  });
+  const canBeManual = (sharesView.shares[shareIndex].isManual || autoShareCount > 1) ? true : false;
 
   const buttonPressHandler = function (val, type) {
     const data = {
@@ -38,84 +45,196 @@ const Share = props => {
     }
   }
 
+  const shareResetEventHandler = function () {
+    props.resetShare({ shareIndex, totalBill });
+  }
+
+  const shareDeleteEventHandler = function () {
+    props.deleteShare({ shareIndex, totalBill })
+  }
+
   return (
     <View style={styles.shareViewOuterLayout}>
 
       <View style={styles.buttonLayout}>
-        <Button
-          onPress={() => buttonPressHandler(1, 'dollar')}
-          color={styles.incrementButton.color}
-          style={styles.incrementButton}
-          title="Up">
-        </Button>
 
-        {/* Button Title - <FontAwesomeIcon icon={faAngleUp} /> */}
+        <View style={styles.buttonSet}>
+          <View style={styles.button}>
+            <Button
+              disabled={!canBeManual}
+              onPress={() => buttonPressHandler(1, 'dollar')}
+              color={styles.incrementButton.color}
+              style={styles.incrementButton}
+            // title={<FontAwesomeIcon icon={faAngleDoubleUp} />}
+            >
+            </Button>
+          </View>
+          <View style={styles.button}>
+            <Button
+              disabled={!canBeManual}
+              onPress={() => buttonPressHandler(0.01, 'dollar')}
+              color={styles.incrementButton.color}
+              style={styles.incrementButton}
+            // title={<FontAwesomeIcon icon={faAngleUp} />}
+            >
+            </Button>
+          </View>
 
-        {/* <View><FontAwesomeIcon icon={faDollarSign} /> </View> */}
+        </View>
+
+        <View style={styles.changeTypeSymbol}>
+          {/* <FontAwesomeIcon icon={faDollarSign} /> */}
+        </View>
         <View style={styles.decrementButton}>
-          <Button
+          <View style={styles.buttonSet}>
 
-            onPress={() => buttonPressHandler(-1, 'dollar')}
-            color={styles.incrementButton.color}
-            style={styles.icon}
-            title="down">
-          </Button>
 
-          {/* Button Title - <FontAwesomeIcon icon={faAngleDown}  */}
+            <View style={styles.button}>
+              <Button
+                disabled={!canBeManual}
+                onPress={() => buttonPressHandler(-1, 'dollar')}
+                color={styles.decrementButton.color}
+                style={styles.decrementButton}
+              // title={<FontAwesomeIcon icon={faAngleDoubleDown} />}
+              >
+              </Button>
+            </View>
 
+            <View style={styles.buton}>
+              <Button
+                disabled={!canBeManual}
+                onPress={() => buttonPressHandler(-0.01, 'dollar')}
+                color={styles.decrementButton.color}
+                style={styles.decrementButton}
+              // title={<FontAwesomeIcon icon={faAngleDown} />}
+              >
+              </Button>
+            </View>
+          </View>
         </View>
       </View>
 
+
       <View>
-        <Text>Share {shareIndex + 1}: {shareAmount} - {percentTotal}%</Text>
+        <Text style={{ fontWeight: 'bold' }}>Share {shareIndex + 1}</Text>
+        <Text>${shareAmount}</Text>
+        <Text>{percentTotal}%</Text>
+        <View style={styles.buttonSet}>
+          <View style={styles.button}>
+            <Button
+              // title={<FontAwesomeIcon icon={faTrashAlt} />}
+              onPress={shareDeleteEventHandler}
+              color={styles.deleteButton.color}
+              style={styles.deleteButton} />
+          </View>
+          <View style={styles.button}>
+            <Button
+              disabled={!props.sharesView.shares[shareIndex].isManual}
+              // title={<FontAwesomeIcon icon={faUndo} />}
+              onPress={shareResetEventHandler}
+              color={styles.resetButton.color}
+              style={styles.resetButton}>
+            </Button>
+          </View>
+        </View>
       </View>
 
       <View style={styles.buttonLayout}>
-        <Button
-          color={styles.incrementButtonColor.color}
-          onPress={() => buttonPressHandler(0.1, 'percent')}
-          style={styles.incrementButton}
-          title="Up" >
-        </Button>
-        {/* <View><FontAwesomeIcon icon={faPercent} /> </View> */}
-        <View style={styles.decrementButton}>
-          <Button title="down"
-            onPress={() => buttonPressHandler(-0.1, 'percent')}>
+        <View style={styles.buttonSet}>
 
-          </Button>
+          <View style={styles.button}>
+            <Button
+              disabled={!canBeManual}
+              color={styles.incrementButton.color}
+              onPress={() => buttonPressHandler(1.0, 'percent')}
+              style={styles.incrementButton}
+            // title={<FontAwesomeIcon icon={faAngleDoubleUp} />} 
+            >
+            </Button>
+          </View>
+          <View style={styles.button}>
+            <Button
+              disabled={!canBeManual}
+              color={styles.incrementButton.color}
+              // title={<FontAwesomeIcon icon={faAngleUp} />}
+              style={styles.incrementButton}
+              onPress={() => buttonPressHandler(0.1, 'percent')}>
+            </Button>
+          </View>
+        </View>
+        <View style={styles.changeTypeSymbol}>
+          {/* <FontAwesomeIcon icon={faPercent} /> */}
+        </View>
+
+        <View style={styles.buttonSet}>
+          <View style={styles.button}>
+            <Button
+              disabled={!canBeManual}
+              color={styles.decrementButton.color}
+              onPress={() => buttonPressHandler(-1.0, 'percent')}
+              style={styles.decrementButton}
+            // title={<FontAwesomeIcon icon={faAngleDoubleDown} />}
+            >
+            </Button>
+          </View>
+          <View style={styles.button}>
+            <Button
+              disabled={!canBeManual}
+              color={styles.decrementButton.color}
+              onPress={() => buttonPressHandler(-0.1, 'percent')}
+              style={styles.decrementButton}
+            // title={<FontAwesomeIcon icon={faAngleDown} />}
+            >
+            </Button>
+          </View>
         </View>
       </View>
+
     </View>
   )
 }
 
 const styles = {
   incrementButton: {
-    marginBottom: 5,
-    color: 'lightgrey',
+    color: 'forestgreen',
+    border: '2px black solid'
   },
   decrementButton: {
-    opacity: 0.8
+    opacity: 0.8,
+    color: 'blue'
   },
   incrementButtonColor: {
     marginBottom: 5,
     color: 'lightgrey',
   },
+  resetButton: {
+    color: 'orange'
+  },
+  deleteButton: {
+    color: 'red'
+  },
   icon: {
     color: "white",
-  },
-  test: {
-    color: 'green'
   },
   shareViewOuterLayout: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     border: '1px black solid'
   },
   buttonLayout: {
-    margin: 5
+    marginBottom: 5
+  },
+  buttonSet: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  button: {
+    marginRight: '2px'
+  },
+  changeTypeSymbol: {
+    alignItems: 'center'
   }
 }
 

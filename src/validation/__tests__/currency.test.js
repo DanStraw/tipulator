@@ -57,4 +57,10 @@ describe('formattedCurrency', () => {
       expect(formatCurrency(numberSet[0])).toBe(numberSet[1]);
     })
   })
-})
+});
+
+describe('number given to format Decimals', () => {
+  test('float number 200.0 should return string "200.00"', () => {
+    expect(formatDecimals(200.0)).toBe('200.00');
+  });
+});

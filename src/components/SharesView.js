@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Button } from 'react-native';
 import Share from './Share';
-import { SHARES_VIEW_ADD_SHARE, SHARES_VIEW_UPDATE_AUTO_AMOUNT } from './actions';
+import { SHARES_VIEW_ADD_SHARE, SHARES_VIEW_UPDATE_AUTO_AMOUNT, SHARES_VIEW_RESET_SHARES } from './actions';
 
 const mapStateToProps = (state) => {
   const { totalBill, sharesView } = state;
@@ -13,6 +13,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addShare: val => dispatch({ type: SHARES_VIEW_ADD_SHARE, data: val }),
     updateAutoShareAmount: val => dispatch({ type: SHARES_VIEW_UPDATE_AUTO_AMOUNT, data: val }),
+    resetShares: val => {
+      console.log('val:', val);
+      return dispatch({ type: SHARES_VIEW_RESET_SHARES, data: val });
+    }
 
   }
 }
@@ -36,6 +40,7 @@ const SharesView = props => {
 
   const resetSharesEventHandler = function () {
     console.log('reset Shares');
+    props.resetShares({ totalBill });
   }
 
 

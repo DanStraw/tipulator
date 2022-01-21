@@ -9,4 +9,12 @@ describe('total percentage reducer tests', () => {
   test('InValid percentage string', () => {
     expect(reducer(15.0, { type: 'TIP_PERCENTAGE/AUTO_UPDATE', text: "--20.0" })).toEqual(15.0);
   });
+
+  test('InValid percentage string', () => {
+    expect(reducer(15.0, {
+      type: 'TIP_PERCENTAGE/BILL_TOTAL_UPDATE', data: {
+        billTotalNum: 120.00, preTipTotalNum: 100.00
+      }
+    })).toEqual("20.0");
+  });
 })
