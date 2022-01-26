@@ -19,13 +19,16 @@ const mapDispatchToProps = (dispatch) => {
 
 const Share = props => {
   const { sharesView, shareIndex, preTipTotal, tipPercentage, totalBill } = props;
-  const { shareAmount, percentTotal } = sharesView.shares[shareIndex];
+  const { shareAmountText, percentTotal } = sharesView.shares[shareIndex];
 
   let autoShareCount = 0;
   sharesView.shares.forEach(share => {
     autoShareCount = share.isManual ? autoShareCount : autoShareCount + 1;
   });
   const canBeManual = (sharesView.shares[shareIndex].isManual || autoShareCount > 1) ? true : false;
+
+  const share = sharesView.shares[shareIndex];
+  // console.log('share', share, !share.dollarSmallDecrementAllowed);
 
   const buttonPressHandler = function (val, type) {
     const data = {
@@ -61,21 +64,21 @@ const Share = props => {
         <View style={styles.buttonSet}>
           <View style={styles.button}>
             <Button
-              disabled={!canBeManual}
+              disabled={!canBeManual || !share.dollarLargeIncrementAllowed}
               onPress={() => buttonPressHandler(1, 'dollar')}
               color={styles.incrementButton.color}
               style={styles.incrementButton}
-            // title={<FontAwesomeIcon icon={faAngleDoubleUp} />}
+              title={<FontAwesomeIcon icon={faAngleDoubleUp} />}
             >
             </Button>
           </View>
           <View style={styles.button}>
             <Button
-              disabled={!canBeManual}
+              disabled={!canBeManual || !share.dollarSmallIncrementAllowed}
               onPress={() => buttonPressHandler(0.01, 'dollar')}
               color={styles.incrementButton.color}
               style={styles.incrementButton}
-            // title={<FontAwesomeIcon icon={faAngleUp} />}
+              title={<FontAwesomeIcon icon={faAngleUp} />}
             >
             </Button>
           </View>
@@ -83,7 +86,7 @@ const Share = props => {
         </View>
 
         <View style={styles.changeTypeSymbol}>
-          {/* <FontAwesomeIcon icon={faDollarSign} /> */}
+          <FontAwesomeIcon icon={faDollarSign} />
         </View>
         <View style={styles.decrementButton}>
           <View style={styles.buttonSet}>
@@ -91,22 +94,22 @@ const Share = props => {
 
             <View style={styles.button}>
               <Button
-                disabled={!canBeManual}
+                disabled={!canBeManual || !share.dollarLargeDecrementAllowed}
                 onPress={() => buttonPressHandler(-1, 'dollar')}
                 color={styles.decrementButton.color}
                 style={styles.decrementButton}
-              // title={<FontAwesomeIcon icon={faAngleDoubleDown} />}
+                title={<FontAwesomeIcon icon={faAngleDoubleDown} />}
               >
               </Button>
             </View>
 
             <View style={styles.buton}>
               <Button
-                disabled={!canBeManual}
+                disabled={!canBeManual || !share.dollarSmallDecrementAllowed}
                 onPress={() => buttonPressHandler(-0.01, 'dollar')}
                 color={styles.decrementButton.color}
                 style={styles.decrementButton}
-              // title={<FontAwesomeIcon icon={faAngleDown} />}
+                title={<FontAwesomeIcon icon={faAngleDown} />}
               >
               </Button>
             </View>
@@ -117,12 +120,12 @@ const Share = props => {
 
       <View>
         <Text style={{ fontWeight: 'bold' }}>Share {shareIndex + 1}</Text>
-        <Text>${shareAmount}</Text>
+        <Text>${shareAmountText}</Text>
         <Text>{percentTotal}%</Text>
         <View style={styles.buttonSet}>
           <View style={styles.button}>
             <Button
-              // title={<FontAwesomeIcon icon={faTrashAlt} />}
+              title={<FontAwesomeIcon icon={faTrashAlt} />}
               onPress={shareDeleteEventHandler}
               color={styles.deleteButton.color}
               style={styles.deleteButton} />
@@ -130,7 +133,7 @@ const Share = props => {
           <View style={styles.button}>
             <Button
               disabled={!props.sharesView.shares[shareIndex].isManual}
-              // title={<FontAwesomeIcon icon={faUndo} />}
+              title={<FontAwesomeIcon icon={faUndo} />}
               onPress={shareResetEventHandler}
               color={styles.resetButton.color}
               style={styles.resetButton}>
@@ -144,46 +147,46 @@ const Share = props => {
 
           <View style={styles.button}>
             <Button
-              disabled={!canBeManual}
+              disabled={!canBeManual || !share.percentLargeIncrementAllowed}
               color={styles.incrementButton.color}
               onPress={() => buttonPressHandler(1.0, 'percent')}
               style={styles.incrementButton}
-            // title={<FontAwesomeIcon icon={faAngleDoubleUp} />} 
+              title={<FontAwesomeIcon icon={faAngleDoubleUp} />}
             >
             </Button>
           </View>
           <View style={styles.button}>
             <Button
-              disabled={!canBeManual}
+              disabled={!canBeManual || !share.percentSmallIncrementAllowed}
               color={styles.incrementButton.color}
-              // title={<FontAwesomeIcon icon={faAngleUp} />}
+              title={<FontAwesomeIcon icon={faAngleUp} />}
               style={styles.incrementButton}
               onPress={() => buttonPressHandler(0.1, 'percent')}>
             </Button>
           </View>
         </View>
         <View style={styles.changeTypeSymbol}>
-          {/* <FontAwesomeIcon icon={faPercent} /> */}
+          <FontAwesomeIcon icon={faPercent} />
         </View>
 
         <View style={styles.buttonSet}>
           <View style={styles.button}>
             <Button
-              disabled={!canBeManual}
+              disabled={!canBeManual || !share.percentLargeDecrementAllowed}
               color={styles.decrementButton.color}
               onPress={() => buttonPressHandler(-1.0, 'percent')}
               style={styles.decrementButton}
-            // title={<FontAwesomeIcon icon={faAngleDoubleDown} />}
+              title={<FontAwesomeIcon icon={faAngleDoubleDown} />}
             >
             </Button>
           </View>
           <View style={styles.button}>
             <Button
-              disabled={!canBeManual}
+              disabled={!canBeManual || !share.percentSmallDecrementAllowed}
               color={styles.decrementButton.color}
               onPress={() => buttonPressHandler(-0.1, 'percent')}
               style={styles.decrementButton}
-            // title={<FontAwesomeIcon icon={faAngleDown} />}
+              title={<FontAwesomeIcon icon={faAngleDown} />}
             >
             </Button>
           </View>
