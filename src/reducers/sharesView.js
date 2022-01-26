@@ -1,14 +1,12 @@
 import { formatCurrencyForParse, formatCurrency } from '../validation/currency';
 import { formatPercentageForParse, formatPercentage } from '../validation/percent';
+import { setAllCrements } from '../validation/crement';
+import Share from '../classes/Share';
 
 const defaultState = {
   autoShareAmount: 0,
   shares: [
-    {
-      isManual: false,
-      shareAmount: null,
-      percentTotal: 100
-    }
+    new Share('0.00')
   ]
 }
 
@@ -17,7 +15,7 @@ const setState = function (__state, __billTotal) {
   const __manualShares = __state.shares.filter(share => share.isManual);
   let __billTotalLessManualShares = __billTotal;
   __manualShares.forEach(manualShare => {
-    __billTotalLessManualShares -= parseFloat(formatCurrencyForParse(manualShare.shareAmount));
+    __billTotalLessManualShares -= parseFloat(formatCurrencyForParse(manualShare.shareAmountText));
   });
   const __autoShareAmount = (__billTotalLessManualShares / __autoShares.length).toFixed(2);
 
@@ -25,9 +23,13 @@ const setState = function (__state, __billTotal) {
 
   let __updatedState = __state;
   __updatedState.autoShareAmount = formatCurrency(__autoShareAmtString);
-  __updatedState.shares.forEach(share => {
-    if (!share.isManual) share.shareAmount = formatCurrency(__autoShareAmtString);
-    share.percentTotal = share.isManual ? ((parseFloat(formatCurrencyForParse(share.shareAmount)) / __billTotal) * 100).toFixed(1) : ((__autoShareAmount / __billTotal) * 100).toFixed(1)
+  __updatedState.shares.forEach((share, index) => {
+    if (!share.isManual) {
+      share.shareAmountText = formatCurrency(__autoShareAmtString);
+      share.shareAmount = formatCurrency(__autoShareAmtString);
+    };
+    share.percentTotal = share.isManual ? ((parseFloat(formatCurrencyForParse(share.shareAmountText)) / __billTotal) * 100).toFixed(1) : ((__autoShareAmount / __billTotal) * 100).toFixed(1);
+    __updatedState.shares[index] = setAllCrements(__billTotal, __updatedState.shares, index);
   });
   return __updatedState;
 }
@@ -35,11 +37,12 @@ const setState = function (__state, __billTotal) {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case 'sharesView/addShare':
-      const newShare = {
-        isManual: false,
-        shareAmount: null,
-        percentTotal: 0
-      }
+      // const newShare = {
+      //   isManual: false,
+      //   shareAmount: null,
+      //   percentTotal: 0
+      // }
+      const newShare = new Share('0.00');
       const newShares = [...state.shares, newShare];
       const newState = { autoShareAmount: state.autoShareAmount, shares: newShares };
 
@@ -78,7 +81,7 @@ export default (state = defaultState, action) => {
       rsState.autoShareAmount = formatCurrency(rsASA);
       rsState.shares.forEach(share => {
         share.isManual = false;
-        share.shareAmount = formatCurrency(rsASA);
+        share.shareAmountText = formatCurrency(rsASA);
         share.percentTotal = formatPercentage((1 / rsState.shares.length) * 100);
       })
 
@@ -114,9 +117,9 @@ export default (state = defaultState, action) => {
       const ums_changeAmount = action.data.dollarChangeAmount || ((action.data.percentChangeAmount / 100) * ums_billTotal);
       let updatedState = state;
       updatedState.shares[ums_shareIndex].isManual = true;
-      const manualShareInitialAmount = parseFloat(formatCurrencyForParse(updatedState.shares[ums_shareIndex].shareAmount));
+      const manualShareInitialAmount = parseFloat(formatCurrencyForParse(updatedState.shares[ums_shareIndex].shareAmountText));
       let manualShareAmount = manualShareInitialAmount + ums_changeAmount;
-      updatedState.shares[ums_shareIndex].shareAmount = formatCurrency(manualShareAmount.toFixed(2).toString());
+      updatedState.shares[ums_shareIndex].shareAmountText = formatCurrency(manualShareAmount.toFixed(2).toString());
       const ums_newState = setState(updatedState, ums_billTotal);
       return { ...ums_newState };
     default:

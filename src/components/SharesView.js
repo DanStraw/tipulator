@@ -14,7 +14,6 @@ const mapDispatchToProps = (dispatch) => {
     addShare: val => dispatch({ type: SHARES_VIEW_ADD_SHARE, data: val }),
     updateAutoShareAmount: val => dispatch({ type: SHARES_VIEW_UPDATE_AUTO_AMOUNT, data: val }),
     resetShares: val => {
-      console.log('val:', val);
       return dispatch({ type: SHARES_VIEW_RESET_SHARES, data: val });
     }
 
@@ -39,7 +38,6 @@ const SharesView = props => {
   }
 
   const resetSharesEventHandler = function () {
-    console.log('reset Shares');
     props.resetShares({ totalBill });
   }
 
