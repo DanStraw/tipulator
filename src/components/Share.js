@@ -224,7 +224,8 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    border: '1px black solid'
+    //border: '1px black solid',
+    padding: '10px'
   },
   buttonLayout: {
     marginBottom: 5

@@ -79,12 +79,12 @@ export default (state = defaultState, action) => {
       let rsState = state;
       const rsASA = (rsBT / rsState.shares.length);
       rsState.autoShareAmount = formatCurrency(rsASA);
+      const shareRatio = (1 / rsState.shares.length).toFixed(3);
       rsState.shares.forEach(share => {
         share.isManual = false;
         share.shareAmountText = formatCurrency(rsASA);
-        share.percentTotal = formatPercentage((1 / rsState.shares.length) * 100);
+        share.percentTotal = formatPercentage((shareRatio * 100).toFixed(1));
       })
-
       return { ...rsState };
 
     case 'sharesView/updateAutoShareAmount':
