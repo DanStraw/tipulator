@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Button } from 'react-native';
+import { Card, Chip } from 'react-native-elements';
 import { SHARES_VIEW_DELETE_SHARE, SHARES_VIEW_MANUAL_UPDATE, SHARES_VIEW_RESET_SHARE } from './actions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faAngleUp, faAngleDown, faAngleDoubleUp, faAngleDoubleDown, faDollarSign, faPercent, faUndo, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -17,9 +18,21 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
+
+
 const Share = props => {
+
   const { sharesView, shareIndex, preTipTotal, tipPercentage, totalBill } = props;
   const { shareAmountText, percentTotal } = sharesView.shares[shareIndex];
+
+  // let percentTextWidth;
+  // const measureView = function (event) {
+  //   // console.log('event properties: ', event);
+  //   // console.log('width: ', event.nativeEvent.layout.width);
+  //   percentTextWidth = event.nativeEvent.layout.width.toString();
+  //   console.log('per:', percentTextWidth);
+  // }
+
 
   let autoShareCount = 0;
   sharesView.shares.forEach(share => {
@@ -28,7 +41,6 @@ const Share = props => {
   const canBeManual = (sharesView.shares[shareIndex].isManual || autoShareCount > 1) ? true : false;
 
   const share = sharesView.shares[shareIndex];
-  // console.log('share', share, !share.dollarSmallDecrementAllowed);
 
   const buttonPressHandler = function (val, type) {
     const data = {
@@ -55,11 +67,144 @@ const Share = props => {
   const shareDeleteEventHandler = function () {
     props.deleteShare({ shareIndex, totalBill })
   }
-
   return (
     <View style={styles.shareViewOuterLayout}>
+      <Card
+        title="test feature"
+        id="new_id">
+        <Card.Title>Share {shareIndex + 1}</Card.Title>
+        <Card.Divider />
 
-      <View style={styles.buttonLayout}>
+        <View style={[styles.container, { width: 'auto' }]}>
+          <View style={styles.container_item}>
+            <View style={styles.buttonLayout}>
+              <View style={styles.button}>
+                <Chip
+                  icon={{
+                    name: 'angle-double-up',
+                    type: 'font-awesome',
+                    size: 10,
+                    color: 'white'
+                  }}></Chip>
+              </View>
+            </View>
+
+            <View style={styles.buttonLayout}>
+              <View style={styles.button}>
+                <Chip
+                  icon={{
+                    name: 'angle-double-down',
+                    type: 'font-awesome',
+                    size: 10,
+                    color: 'white'
+                  }}></Chip>
+              </View>
+            </View>
+          </View>
+          <View style={[styles.container_item, { alignSelf: 'flex-start', top: '18px' }]}><Text>${shareAmountText}</Text>
+          </View>
+          <View style={[styles.container_item, { position: 'relative', right: '0px' }]}>
+            <View style={styles.buttonLayout}>
+              <View style={styles.button}>
+                <Chip
+                  icon={{
+                    name: 'angle-up',
+                    type: 'font-awesome',
+                    size: 10,
+                    color: 'white'
+                  }}></Chip>
+              </View>
+            </View>
+
+            <View style={styles.buttonLayout}>
+              <View style={styles.button}>
+                <Chip
+                  icon={{
+                    name: 'angle-down',
+                    type: 'font-awesome',
+                    size: 10,
+                    color: 'white'
+                  }}></Chip>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        <Card.Divider />
+
+        <View style={[styles.container, { width: 'auto' }]}>
+          <View style={styles.container_item}>
+            <View style={styles.buttonLayout}>
+              <View style={styles.button}>
+                <Chip
+                  icon={{
+                    name: 'angle-double-up',
+                    type: 'font-awesome',
+                    size: 10,
+                    color: 'white'
+                  }}></Chip>
+              </View>
+            </View>
+
+            <View style={styles.buttonLayout}>
+              <View style={styles.button}>
+                <Chip
+                  icon={{
+                    name: 'angle-double-down',
+                    type: 'font-awesome',
+                    size: 10,
+                    color: 'white'
+                  }}></Chip>
+              </View>
+            </View>
+          </View>
+          <View style={[styles.container_item, { alignSelf: 'center', position: 'absolute', left: '0px', right: '0px' }]}>
+            <Text style={styles.percentTotalText}>{percentTotal}%</Text>
+          </View>
+          <View style={[styles.container_item, { position: 'absolute', right: '0px', width: 'auto' }]}>
+            <View style={styles.buttonLayout}>
+              <View style={styles.button}>
+                <Chip
+                  icon={{
+                    name: 'angle-up',
+                    type: 'font-awesome',
+                    size: 10,
+                    color: 'white'
+                  }}></Chip>
+              </View>
+            </View>
+
+            <View style={styles.buttonLayout}>
+              <View style={styles.button}>
+                <Chip
+                  icon={{
+                    name: 'angle-down',
+                    type: 'font-awesome',
+                    size: 10,
+                    color: 'white'
+                  }}></Chip>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* <Text>${shareAmountText}</Text>
+        
+        <View style={styles.buttonLayout}> 
+        <View style={styles.button}>
+          <Chip
+            icon={{
+              name: 'angle-double-up',
+              type: 'font-awesome',
+              size: 10,
+              color: 'white'
+            }}></Chip>
+        </View>
+
+        </View>*/}
+
+      </Card>
+      {/* <View style={styles.buttonLayout}>
 
         <View style={styles.buttonSet}>
           <View style={styles.button}>
@@ -191,9 +336,9 @@ const Share = props => {
             </Button>
           </View>
         </View>
-      </View>
+      </View> */}
 
-    </View>
+    </View >
   )
 }
 
@@ -239,6 +384,24 @@ const styles = {
   },
   changeTypeSymbol: {
     alignItems: 'center'
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  container_item: {
+    // flex: 1, //why this doesnt work???
+    // width: 150, //using fixed item width instead of flex: 0.5 works
+    // height: 'auto',
+    // width: 'auto',
+    padding: 2,
+    // backgroundColor: 'red',
+    // flexGrow: 1,
+    // flexShrink: 0,
+  },
+  percentTotalText: {
+    margin: 'auto'
   }
 }
 

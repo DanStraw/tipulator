@@ -102,7 +102,7 @@ const styles = {
   },
   carousel: {
     flexGrow: 0,
-    height: 150,
+    height: "auto",
     backgroundColor: 'rgba(178,199,138, 0.5)',
     // opacity: 1,
     // borderWidth: 1,
