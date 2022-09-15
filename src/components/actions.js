@@ -15,3 +15,4 @@ export const SHARES_VIEW_MANUAL_UPDATE = 'sharesView/updateManualShare';
 export const SHARES_VIEW_RESET_SHARE = 'sharesView/resetShare';
 export const SHARES_VIEW_RESET_SHARES = 'sharesView/resetShares';
 export const SHARES_VIEW_DELETE_SHARE = 'sharesView/deleteShare';
+export const EDITABLE_BILL_UPDATE = 'editableBill/UPDATE';

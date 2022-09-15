@@ -4,8 +4,8 @@ import { TextInput, View, Text, StyleSheet } from 'react-native';
 import { TIP_PERCENTAGE_UPDATE, TOTAL_BILL_AUTO_UPDATE, TIP_TOTAL_AUTO_UPDATE, SHARES_VIEW_TIP_PERCENTAGE_CHANGE } from './actions';
 
 const mapStateToProps = state => {
-  const { tipPercentage, preTipTotal } = state;
-  return { tipPercentage, preTipTotal };
+  const { tipPercentage, preTipTotal, editableBill } = state;
+  return { tipPercentage, preTipTotal, editableBill };
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -18,7 +18,8 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const TipPercentage = props => {
-  const { preTipTotal } = props;
+  const { preTipTotal, editableBill } = props;
+  console.log('tipPercentage:', editableBill);
 
   const inputChangeEventHandler = (value) => {
     props.updateTipPercentage(value);
@@ -34,8 +35,9 @@ const TipPercentage = props => {
         value={props.tipPercentage}
         keyboardType='numeric'
         onChangeText={inputChangeEventHandler}
+        editable={editableBill}
       />
-      <Text>%</Text>
+      <Text style={styles.percentSymbol}>%</Text>
     </View>
   )
 }
@@ -49,7 +51,14 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     borderColor: "#cccccc",
     borderBottomWidth: 1,
-    marginLeft: '20px'
+    marginLeft: '20px',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white'
+  },
+  percentSymbol: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white',
+    marginLeft: '2px'
   }
 })
 

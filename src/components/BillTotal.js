@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 const mapState = state => {
@@ -12,16 +12,36 @@ const BillTotal = props => {
   if (!totalBill) {
     return (
       <View>
-        <Text testID="total-bill" total-bill="0.00">$0.00</Text>
+        <Text style={styles.billTotalText} testID="total-bill" total-bill="0.00">$0.00</Text>
       </View>
     )
   }
 
   return (
     <View>
-      <Text>$</Text><Text testID="total-bill">{totalBill}</Text>
+      <View>
+        <Text style={styles.dollarSign}>$</Text>
+      </View>
+      <View>
+        <Text testID="total-bill" style={styles.billTotalText}>{totalBill}</Text>
+      </View>
+
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  billTotalText: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white',
+  },
+  dollarSign: {
+    display: 'inline',
+    marginRight: '5px',
+    float: 'left',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white'
+  }
+});
 
 export default connect(mapState)(BillTotal);

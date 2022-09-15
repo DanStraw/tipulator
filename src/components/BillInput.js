@@ -4,8 +4,8 @@ import { TextInput, StyleSheet } from 'react-native';
 import { BILL_TOTAL_MANUAL_UPDATE, FORMAT, TIP_PERCENTAGE_BILL_UPDATE, TIP_TOTAL_AUTO_UPDATE, TIP_TOTAL_BILL_UPDATE, SHARES_VIEW_UPDATE_FROM_NEW_BILL_TOTAL } from './actions';
 
 const mapStateToProps = (state) => {
-  const { totalBill, preTipTotal } = state;
-  return { totalBill, preTipTotal };
+  const { totalBill, preTipTotal, editableBill } = state;
+  return { totalBill, preTipTotal, editableBill };
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -19,13 +19,13 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const BillInput = props => {
-
+  const { editableBill } = props;
+  console.log('billInput:', editableBill);
   const inputChangeEventHandler = function (value) {
     let updatedBillTotal = value.split(",").join("");
     updatedBillTotal = updatedBillTotal.split(".").join("");
     updatedBillTotal = updatedBillTotal.substring(0, updatedBillTotal.length - 2) + "." + updatedBillTotal.substring(updatedBillTotal.length - 2);
     const billTotalNum = parseFloat(updatedBillTotal);
-
     const preTipTotal = props.preTipTotal === "" ? "0.00" : props.preTipTotal;
     const preTipTotalNum = parseFloat(preTipTotal.split(",").join(""));
 
@@ -48,14 +48,16 @@ const BillInput = props => {
       placeHolder="0.00"
       placeholderTextColor="#ff00ff"
       style={styles.input}
+      editable={editableBill}
     />
   )
 }
 
 const styles = StyleSheet.create({
   input: {
-    color: '#FF0000',
     textAlign: 'right',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white'
   }
 })
 
