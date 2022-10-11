@@ -72,18 +72,21 @@ const SharesView = props => {
   const carouselRef = React.useRef(null);
   return (
     <View>
-      <View>
-        {shareView}
-      </View>
       <View style={styles.buttonRow}>
         <View>
           <Button disabled={totalBill === '0.00' || totalBill === '' ? true : false} testID="add_share_button_test" title="Add a Share" onPress={addShareEventHandler}
-            color={styles.add_share_button.color} />
+            color={styles.add_share_button.color} 
+            />
         </View>
         <View >
-          <Button disabled={sharesResetDisabled}
-            testID="reset_shares_button_test" title="Reset Shares" onPress={resetSharesEventHandler} color={styles.reset_shares_button.color} />
+          <Button 
+          disabled={sharesResetDisabled}
+            testID="reset_shares_button_test" title="Reset Shares" onPress={resetSharesEventHandler} color={styles.reset_shares_button.color}
+            style={styles.reset_shares_button} />
         </View>
+      </View>
+            <View>
+        {shareView}
       </View>
     </View>
 
@@ -98,11 +101,11 @@ const styles = {
     color: "#097969"
   },
   reset_shares_button: {
-    color: "#8b0000"
+   color: "#8b0000"
   },
   carousel: {
     flexGrow: 0,
-    height: 150,
+    height: "auto",
     backgroundColor: 'rgba(178,199,138, 0.5)',
     // opacity: 1,
     // borderWidth: 1,

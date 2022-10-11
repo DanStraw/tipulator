@@ -10,7 +10,7 @@ describe('sharesView reducer tests', () => {
       shares: [
         {
           isManual: false,
-          shareAmount: null
+          shareAmountText: null
         }
       ]
     }
@@ -46,11 +46,11 @@ describe('sharesView reducer tests', () => {
   test('state with manual share', () => {
     initialState.shares[1] = {
       isManual: false,
-      shareAmount: null
+      shareAmountText: null
     }
     initialState.shares[2] = {
       isManual: true,
-      shareAmount: "25.00"
+      shareAmountText: "25.00"
     }
     expect(
       reducer(initialState,
@@ -68,7 +68,7 @@ describe('sharesView reducer tests', () => {
     test('remove on of two share', () => {
       initialState.shares[1] = {
         isManual: false,
-        shareAmount: null
+        shareAmountText: null
       };
       expect(
         reducer(initialState,
@@ -79,18 +79,18 @@ describe('sharesView reducer tests', () => {
               totalBill: '115.00'
             }
           }
-        ).shares[0].shareAmount
+        ).shares[0].shareAmountText
       ).toBe('115.00');
     }
     );
     test('remove one of three shares, leaving two auto shares', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '50.0'
+        shareAmountText: '50.0'
       };
       initialState.shares[2] = {
         isManual: false,
-        shareAmount: null
+        shareAmountText: null
       };
       expect(
         reducer(initialState,
@@ -101,17 +101,17 @@ describe('sharesView reducer tests', () => {
               totalBill: '115.00'
             }
           }
-        ).shares[0].shareAmount
+        ).shares[0].shareAmountText
       ).toBe('57.50');
     });
     test('remove one of three shares, leaving 1 auto 1 manual', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '50.00'
+        shareAmountText: '50.00'
       };
       initialState.shares[2] = {
         isManual: false,
-        shareAmount: null
+        shareAmountText: null
       };
       const updatedState = reducer(initialState,
         {
@@ -123,17 +123,17 @@ describe('sharesView reducer tests', () => {
         }
       );
       expect(
-        updatedState.shares[0].shareAmount
+        updatedState.shares[0].shareAmountText
       ).toBe('65.00');
     });
     test('of three shares, deleting the 1 auto share results in the last share in array to change to auto', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '45.00'
+        shareAmountText: '45.00'
       };
       initialState.shares[2] = {
         isManual: true,
-        shareAmount: '40.00'
+        shareAmountText: '40.00'
       };
       const updatedState = reducer(initialState,
         {
@@ -148,7 +148,7 @@ describe('sharesView reducer tests', () => {
         updatedState.shares[1].isManual
       ).toBe(false);
       expect(
-        updatedState.shares[1].shareAmount
+        updatedState.shares[1].shareAmountText
       ).toBe("70.00");
     });
   });
@@ -157,23 +157,23 @@ describe('sharesView reducer tests', () => {
     test('all auto share', () => {
       initialState.shares[1] = {
         isManual: false,
-        shareAmount: null
+        shareAmountText: null
       }
       expect(reducer(initialState, {
         type: 'sharesView/updateFromNewBillTotal',
         data: { totalBill: '150.00' }
-      }).shares[0].shareAmount).toBe('75.00');
+      }).shares[0].shareAmountText).toBe('75.00');
     });
 
     test('with a manual share', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '100.00'
+        shareAmountText: '100.00'
       }
       expect(reducer(initialState, {
         type: 'sharesView/updateFromNewBillTotal',
         data: { totalBill: '150.00' }
-      }).shares[0].shareAmount).toBe('50.00');
+      }).shares[0].shareAmountText).toBe('50.00');
     });
 
     test('only one share', () => {
@@ -190,7 +190,7 @@ describe('sharesView reducer tests', () => {
     test('reset manual shares updates autoShareAmount and isManual prop on reset share', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '70.00'
+        shareAmountText: '70.00'
       };
       const resetState = reducer(initialState,
         {
@@ -212,11 +212,11 @@ describe('sharesView reducer tests', () => {
     test('reset manual shares updates autoShareAmount and all isManual props to false', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '70.00'
+        shareAmountText: '70.00'
       };
       initialState.shares[2] = {
         isManual: true,
-        shareAmount: '20.00'
+        shareAmountText: '20.00'
       };
       const resetState = reducer(initialState,
         {
@@ -245,7 +245,7 @@ describe('sharesView reducer tests', () => {
     test('bill total updates', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '60.00'
+        shareAmountText: '60.00'
       };
       expect(reducer(initialState, action).autoShareAmount).toBe('120.00');
 
@@ -254,25 +254,25 @@ describe('sharesView reducer tests', () => {
     test('auto share value(s) update', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '50.00'
+        shareAmountText: '50.00'
       };
       initialState.shares[2] = {
         isManual: false,
-        shareAmount: '40.00'
+        shareAmountText: '40.00'
       };
-      expect(reducer(initialState, action).shares[2].shareAmount).toBe('65.00');
+      expect(reducer(initialState, action).shares[2].shareAmountText).toBe('65.00');
     });
 
     test('manual shares remain constant', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '50.00'
+        shareAmountText: '50.00'
       };
       initialState.shares[2] = {
         isManual: false,
-        shareAmount: '40.00'
+        shareAmountText: '40.00'
       };
-      expect(reducer(initialState, action).shares[1].shareAmount).toBe('50.00');
+      expect(reducer(initialState, action).shares[1].shareAmountText).toBe('50.00');
     });
   })
 
@@ -290,36 +290,36 @@ describe('sharesView reducer tests', () => {
     test('small perc increment', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '70.00'
+        shareAmountText: '70.00'
       }
-      expect(reducer(initialState, percent_action).shares[1].shareAmount).toBe('70.12');
+      expect(reducer(initialState, percent_action).shares[1].shareAmountText).toBe('70.12');
     });
 
     test('large perc increment', () => {
       percent_action.data.percentChangeAmount = 1;
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '70.00'
+        shareAmountText: '70.00'
       }
-      expect(reducer(initialState, percent_action).shares[1].shareAmount).toBe('71.20');
+      expect(reducer(initialState, percent_action).shares[1].shareAmountText).toBe('71.20');
     });
 
     test('small perc decrement', () => {
       percent_action.data.percentChangeAmount = -0.1;
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '70.00'
+        shareAmountText: '70.00'
       }
-      expect(reducer(initialState, percent_action).shares[1].shareAmount).toBe('69.88');
+      expect(reducer(initialState, percent_action).shares[1].shareAmountText).toBe('69.88');
     });
 
     test('large perc decrement', () => {
       percent_action.data.percentChangeAmount = -1;
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '70.00'
+        shareAmountText: '70.00'
       }
-      expect(reducer(initialState, percent_action).shares[1].shareAmount).toBe('68.80');
+      expect(reducer(initialState, percent_action).shares[1].shareAmountText).toBe('68.80');
     });
     //-------------DOllAR---------------
     let dollar_action = {
@@ -335,36 +335,39 @@ describe('sharesView reducer tests', () => {
     test('small dollar increment', () => {
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '70.00'
+        shareAmountText: '70.00'
       }
-      expect(reducer(initialState, dollar_action).shares[1].shareAmount).toBe('70.01');
+      expect(reducer(initialState, dollar_action).shares[1].shareAmountText).toBe('70.01');
     });
 
     test('large dollar increment', () => {
       dollar_action.data.dollarChangeAmount = 1;
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '71.00'
+        shareAmountText: '71.00'
       }
-      expect(reducer(initialState, dollar_action).shares[1].shareAmount).toBe('72.00');
+      expect(reducer(initialState, dollar_action).shares[1].shareAmountText).toBe('72.00');
     });
 
     test('small dollar decrement', () => {
       dollar_action.data.dollarChangeAmount = -0.01;
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '70.95'
+        shareAmountText: '70.95'
       }
-      expect(reducer(initialState, dollar_action).shares[1].shareAmount).toBe('70.94');
+
+      expect(reducer(initialState, dollar_action).shares[1].shareAmountText).toBe('70.94');
     });
 
     test('large dollar decrement', () => {
       dollar_action.data.dollarChangeAmount = -1;
       initialState.shares[1] = {
         isManual: true,
-        shareAmount: '70.00'
+        shareAmountText: '70.00'
       }
-      expect(reducer(initialState, dollar_action).shares[1].shareAmount).toBe('69.00');
+      // const val = reducer(initialState, dollar_action).shares[1].shareAmounText;
+      // console.log('val val:', val);
+      expect(reducer(initialState, dollar_action).shares[1].shareAmountText).toBe('69.00');
     });
   });
 });

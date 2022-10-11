@@ -24,7 +24,7 @@ const numStringToFloat = function (string) {
   return parseFloat(formatCurrencyForParse(string)).toFixed(2)
 }
 
-const isDollarSmallIncrementAllowed = function (billTotal, shares, shareIndex) {
+export const isDollarSmallIncrementAllowed = function (billTotal, shares, shareIndex) {
   let autoShareCount = getAutoShareCount(shares);
   const autoShareTotal = getAutoShareTotal(billTotal, shares, shareIndex);
   const isNotAllowed = ((autoShareTotal - 0.01).toFixed(2) / autoShareCount) < 0.01;
@@ -32,7 +32,7 @@ const isDollarSmallIncrementAllowed = function (billTotal, shares, shareIndex) {
   return shares[shareIndex].dollarSmallIncrementAllowed;
 }
 
-const isDollarLargeIncrementAllowed = function (billTotal, shares, shareIndex) {
+export const isDollarLargeIncrementAllowed = function (billTotal, shares, shareIndex) {
   let autoShareCount = getAutoShareCount(shares);
   const autoShareTotal = getAutoShareTotal(billTotal, shares, shareIndex);
   const isNotAllowed = ((autoShareTotal / autoShareCount) - 1.00).toFixed(2) < 0.01;
@@ -41,19 +41,19 @@ const isDollarLargeIncrementAllowed = function (billTotal, shares, shareIndex) {
   return shares[shareIndex].dollarLargeIncrementAllowed;
 }
 
-const isDollarSmallDecrementAllowed = function (shares, shareIndex) {
+export const isDollarSmallDecrementAllowed = function (shares, shareIndex) {
   const isNotAllowed = numStringToFloat(shares[shareIndex].shareAmountText) <= 0.01;
   shares[shareIndex].dollarSmallDecrementAllowed = isNotAllowed ? false : true;
   return shares[shareIndex].dollarSmallDecrementAllowed;
 }
 
-const isDollarLargeDecrementAllowed = function (shares, shareIndex) {
+export const isDollarLargeDecrementAllowed = function (shares, shareIndex) {
   const isNotAllowed = numStringToFloat(shares[shareIndex].shareAmountText || shares[shareIndex].shareAmount) <= 1;
   shares[shareIndex].dollarLargeDecrementAllowed = !isNotAllowed;
   return shares[shareIndex].dollarLargeDecrementAllowed;
 }
 
-const isPercentSmallIncrementAllowed = function (billTotal, shares, shareIndex) {
+export const isPercentSmallIncrementAllowed = function (billTotal, shares, shareIndex) {
   let autoShareCount = getAutoShareCount(shares);
   const autoShareTotal = getAutoShareTotal(billTotal, shares, shareIndex);
   const changeAmt = (parseFloat(formatCurrencyForParse(billTotal)) * .001).toFixed(2);
@@ -62,7 +62,7 @@ const isPercentSmallIncrementAllowed = function (billTotal, shares, shareIndex) 
   return shares[shareIndex].percentSmallIncrementAllowed;
 };
 
-const isPercentLargeIncrementAllowed = function (billTotal, shares, shareIndex) {
+export const isPercentLargeIncrementAllowed = function (billTotal, shares, shareIndex) {
   let autoShareCount = getAutoShareCount(shares);
   const autoShareTotal = getAutoShareTotal(billTotal, shares, shareIndex);
   const changeAmt = (parseFloat(formatCurrencyForParse(billTotal)) * .01).toFixed(2);
@@ -71,14 +71,14 @@ const isPercentLargeIncrementAllowed = function (billTotal, shares, shareIndex) 
   return shares[shareIndex].percentLargeIncrementAllowed;
 };
 
-const isPercentSmallDecrementAllowed = function (billTotal, shares, shareIndex) {
+export const isPercentSmallDecrementAllowed = function (billTotal, shares, shareIndex) {
   const changeAmt = (parseFloat(formatCurrencyForParse(billTotal)) * .001).toFixed(2);
   const isNotAllowed = changeAmt == 0 ? true : numStringToFloat(shares[shareIndex].shareAmountText) <= changeAmt;
   shares[shareIndex].percentSmallDecrementAllowed = !isNotAllowed;
   return shares[shareIndex].percentSmallDecrementAllowed;
 }
 
-const isPercentLargeDecrementAllowed = function (billTotal, shares, shareIndex) {
+export const isPercentLargeDecrementAllowed = function (billTotal, shares, shareIndex) {
   const changeAmt = (parseFloat(formatCurrencyForParse(billTotal)) * .01).toFixed(2);
   const isNotAllowed = changeAmt == 0 ? true : numStringToFloat(shares[shareIndex].shareAmountText) <= changeAmt;
   shares[shareIndex].percentLargeDecrementAllowed = !isNotAllowed;

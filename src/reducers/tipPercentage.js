@@ -13,8 +13,14 @@ export default (state = "15.0", action) => {
       return formatted;
     case 'TIP_PERCENTAGE/BILL_TOTAL_UPDATE':
       const { billTotalNum, preTipTotalNum } = action.data;
+      // console.log('TIP_PERCENTAGE action.data:', action.data);
+      if (preTipTotalNum <= 0.20) {
+        return "15.0";
+      }
+
       const tipTotal = billTotalNum - preTipTotalNum;
       const _tipPercentage = ((tipTotal / preTipTotalNum) * 100).toFixed(1).toString();
+      console.log('test: ww: ', _tipPercentage);
       return _tipPercentage;
     default:
       return state;

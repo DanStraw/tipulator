@@ -4,8 +4,8 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { UPDATE_PRE_TIP_TOTAL, TOTAL_BILL_AUTO_UPDATE, TIP_TOTAL_AUTO_UPDATE, SHARES_VIEW_UPDATE_AUTO_AMOUNT } from './actions';
 
 const mapStateToProps = state => {
-  const { preTipTotal, tipPercentage } = state;
-  return { preTipTotal, tipPercentage };
+  const { preTipTotal, tipPercentage, editableBill } = state;
+  return { preTipTotal, tipPercentage, editableBill };
 }
 
 const mapDispatchToProps = dispatch => {
@@ -18,8 +18,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const PreTipTotalInput = props => {
-  const { tipPercentage } = props;
-
+  const { tipPercentage, editableBill } = props;
   const inputChangeEventHandler = function (value) {
     props.updatePreTipTotal(value);
     props.updateBillTotal({ tipPercentage: tipPercentage.toString(), preTipTotal: value });
@@ -36,9 +35,11 @@ const PreTipTotalInput = props => {
       <View style={styles.inputWrap}>
         <TextInput
           placeholder="preTipTotalInput"
+          placeholderTextColor="white"
           value={props.preTipTotal}
           onChangeText={inputChangeEventHandler}
           style={styles.preTipTotalInput}
+          editable={editableBill}
         />
       </View>
     </View>
@@ -58,11 +59,17 @@ const styles = StyleSheet.create({
   },
   dollarSign: {
     display: 'inline',
-    marginRight: '5px',
-    float: 'left'
+    marginRight: '2px',
+    float: 'left',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: '#ffffff'
   },
   preTipTotalInput: {
-    textAlign: 'right'
+    textAlign: 'right',
+    color: '#ffffff',
+    textShadowColor: '#000000',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    // color: 'white'
   }
 })
 

@@ -37,11 +37,6 @@ const setState = function (__state, __billTotal) {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case 'sharesView/addShare':
-      // const newShare = {
-      //   isManual: false,
-      //   shareAmount: null,
-      //   percentTotal: 0
-      // }
       const newShare = new Share('0.00');
       const newShares = [...state.shares, newShare];
       const newState = { autoShareAmount: state.autoShareAmount, shares: newShares };
@@ -117,10 +112,12 @@ export default (state = defaultState, action) => {
       const ums_changeAmount = action.data.dollarChangeAmount || ((action.data.percentChangeAmount / 100) * ums_billTotal);
       let updatedState = state;
       updatedState.shares[ums_shareIndex].isManual = true;
+      // console.log('init state: ', updatedState, ums_shareIndex);
       const manualShareInitialAmount = parseFloat(formatCurrencyForParse(updatedState.shares[ums_shareIndex].shareAmountText));
       let manualShareAmount = manualShareInitialAmount + ums_changeAmount;
       updatedState.shares[ums_shareIndex].shareAmountText = formatCurrency(manualShareAmount.toFixed(2).toString());
       const ums_newState = setState(updatedState, ums_billTotal);
+      // console.log('rbr:', ums_newState);
       return { ...ums_newState };
     default:
       return state;
