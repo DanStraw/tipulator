@@ -75,7 +75,8 @@ describe('Tip reducer dummy', () => {
       expect(reducer("15.00", {
         type: 'tipTotal/BILL_UPDATE', data: {
           billTotalNum: '118.00',
-          preTipTotalNum: '100.00'
+          preTipTotalNum: '100.00',
+          tipPercentage: '18.0'
         }
       })).toBe('18.00');
     });

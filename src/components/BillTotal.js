@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   dollarSign: {
-    display: 'inline',
+    display: 'flex',
     marginRight: '5px',
-    float: 'left',
+    // float: 'left',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     color: 'white'
   }

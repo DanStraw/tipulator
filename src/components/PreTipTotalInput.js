@@ -19,7 +19,6 @@ const mapDispatchToProps = dispatch => {
 
 const PreTipTotalInput = props => {
   const { tipPercentage, editableBill } = props;
-  console.log('PreTipTotalInput:', editableBill);
   const inputChangeEventHandler = function (value) {
     props.updatePreTipTotal(value);
     props.updateBillTotal({ tipPercentage: tipPercentage.toString(), preTipTotal: value });

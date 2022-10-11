@@ -18,7 +18,7 @@ const TipTotal = props => {
 const styles = StyleSheet.create({
   tipTotalText: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    color: 'white',
+    color: 'white'
   }
 });
 
