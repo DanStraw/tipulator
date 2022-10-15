@@ -1,7 +1,22 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, beforeEach } from '@jest/globals';
 import reducer from '../preTipTotal';
 
 describe('preTipTotal reducer tests', () => {
+    let priorState,
+    actionType,
+    actionText,
+    action;
+
+  beforeEach(() => {
+    priorState = 100.00;
+    actionType = "preTipTotal/UPDATE_FROM_BILL_TOTAL_CHANGE";
+    actionText = {
+      preTipTotalNum: 90.0,
+      tipPercentage: 16.0
+    }
+    action = { text: actionText, type: actionType };
+
+  });
   test('invalid currency format including letters', () => {
     expect(reducer("100.00", {
       type: 'UPDATE_PRE_TIP_TOTAL',
@@ -35,4 +50,25 @@ describe('preTipTotal reducer tests', () => {
       }))
       .toEqual("50,000.00");
   });
+
+  test('null billTotalNum returns prior state', () => {
+
+      expect(reducer(priorState, action)).toBe(100.00);
+
+    });
+
+  test('tip percentage undefined', () => {
+    actionText.billTotalNum = 100.00;
+    actionText.tipPercentage = undefined;
+    action.text = actionText;
+    expect(reducer(priorState, action)).toBe("86.96");
+  });
+
+   test('tip percentage defined', () => {
+    actionText.billTotalNum = 100.00;
+    actionText.tipPercentage = 18.0;
+    action.text = actionText;
+    expect(reducer(priorState, action)).toBe("84.75");
+  });
+
 })

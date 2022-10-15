@@ -6,7 +6,7 @@ export default (state = true, action) => {
       return false;
     case 'editableBill/UPDATE':
       let isEditable = true;
-      console.log('act:', action.data);
+     // console.log('act:', action.data);
       action.data.shares.forEach(share => {
         if (share.isManual === true) isEditable = false;
       });
