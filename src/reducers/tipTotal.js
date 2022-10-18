@@ -25,7 +25,6 @@ export default (state = "", action) => {
     case 'tipTotal/BILL_UPDATE':
       const { billTotalNum } = action.data;
       const bu_tipPercentage = action.data.tipPercentage;
-      //  console.log('type: ', typeof bu_tipPercentage);
       const tipDecimal = (typeof bu_tipPercentage === 'string') ? formatPercentageForParse(bu_tipPercentage) : bu_tipPercentage;
       let tipTotal = billTotalNum - (billTotalNum / (1 + (parseFloat(tipDecimal) / 100)));
       return formatCurrencyNegativeAllowable(tipTotal.toFixed(2).toString());

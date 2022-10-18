@@ -80,5 +80,15 @@ describe('Tip reducer dummy', () => {
         }
       })).toBe('18.00');
     });
+
+    test('tipPercentString integer returns correct amt', () => {
+       expect(reducer("15.00", {
+        type: 'tipTotal/BILL_UPDATE', data: {
+          billTotalNum: '125.00',
+          preTipTotalNum: '100.00',
+          tipPercentage: 25.0
+        }
+      })).toBe('25.00');
+    })
   })
 })
