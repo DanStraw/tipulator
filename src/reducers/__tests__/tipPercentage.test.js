@@ -17,4 +17,12 @@ describe('total percentage reducer tests', () => {
       }
     })).toEqual("20.0");
   });
+
+  test('preTiptotal less than .20', () => {
+    expect(reducer(16.0, {
+      type: 'TIP_PERCENTAGE/BILL_TOTAL_UPDATE', data: {
+        billTotalNum: 0.25, preTipTotalNum: 0.19
+      }
+    })).toEqual('15.0');
+  });
 })
