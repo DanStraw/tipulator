@@ -1,5 +1,5 @@
 import { expect, describe, test } from '@jest/globals';
-import { isValidCurrency, dropLeadingZeros, formatDecimals, removeCommas, formatCurrency } from '../currency';
+import { isValidCurrency, dropLeadingZeros, formatDecimals, removeCommas, formatCurrency, formatCurrencyForParse, formatCurrencyNegativeAllowable } from '../currency';
 import { formatCommas } from '../numberString';
 
 describe('currency format tests', () => {
@@ -63,4 +63,16 @@ describe('number given to format Decimals', () => {
   test('float number 200.0 should return string "200.00"', () => {
     expect(formatDecimals(200.0)).toBe('200.00');
   });
+});
+
+describe('format currency for parse', () => {
+  test('invalid currency', () => {
+    expect(formatCurrencyForParse('-30,00.000')).toBe('-30,00.000');
+  })
+});
+
+describe('format negative allowable', () => {
+  test('invalid negative currency', () => {
+    expect(formatCurrencyNegativeAllowable('-30,0d0.000')).toBe(null);
+  })
 });

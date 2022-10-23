@@ -71,19 +71,15 @@ const formatCurrencyNegativeAllowable = function (initialState) {
   const integersNoCommas = removeCommas(integers);
   const integersReformattedCommas = formatCommas(integersNoCommas);
   const formattedCurrency = joinIntegersToDecimals([integersReformattedCommas, decimals]);
-  return isValidNegativeCurrency(formattedCurrency) ? formattedCurrency : initialState;
+  return isValidNegativeCurrency(formattedCurrency) ? formattedCurrency : null;
 }
 
 const formatCurrencyForParse = function (initialState) {
-  // console.log('fcfp:', initialState);
   const newStateFormatted = formatDecimals(initialState);
   const droppedZeroes = dropLeadingZeros(newStateFormatted);
   const [integers, decimals] = splitAtDecimal(droppedZeroes);
   const integersNoCommas = removeCommas(integers);
   const formattedCurrency = joinIntegersToDecimals([integersNoCommas, decimals]);
-  // if (initialState === '69.00') {
-  //   console.log('mine:', formattedCurrency);
-  // }
   return isValidCurrency(formattedCurrency) ? formattedCurrency : initialState;
 }
 
