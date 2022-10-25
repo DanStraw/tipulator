@@ -82,6 +82,9 @@ describe('Dollar Large Decrement', () => {
 
       expect(isDollarLargeDecrementAllowed([new Share("1.50", true), new Share("30.00"), new Share("30.00")], 0)).toBe(true);
     });
+    test('share amt given as num not text', () => {
+      expect(isDollarLargeDecrementAllowed([new Share(null, false, 33.3, 5.00), new Share(null, false, 33.3, 5.00), new Share(null, false, 33.3, 5.00)], 1)).toBe(true);
+    });
   });
 
   describe('should return false', () => {
@@ -106,6 +109,16 @@ describe('Percent Samll Increment', () => {
     })
   });
   describe('return false', () => {
+    test('change amt is 0', () => {
+      const billTotal = '1.00';
+      const shares = [
+        new Share("0.01"),
+        new Share("0.98", true),
+        new Share("0.01")
+      ];
+      expect(isPercentSmallIncrementAllowed(billTotal, shares, 1)).toBe(false);
+    });
+
     test('increasing the manual share by 0.1% would bring autoshares to or below 0', () => {
       const billTotal = '100.00';
       const shares = [
@@ -129,6 +142,7 @@ describe('Percent Large Increment', () => {
       ]
       expect(isPercentLargeIncrementAllowed(billTotal, shares, 1)).toBe(true);
     });
+
   });
 
   describe('return false', () => {
@@ -141,6 +155,15 @@ describe('Percent Large Increment', () => {
       ]
       expect(isPercentLargeIncrementAllowed(billTotal, shares, 1)).toBe(false);
     });
+    test('bill total too small', () => {
+      const billTotal = '0.04';
+      const shares = [
+        new Share("0.01"),
+        new Share("0.02", true),
+        new Share("0.01")
+      ]
+      expect(isPercentLargeIncrementAllowed(billTotal, shares, 1)).toBe(false);
+    })
   });
 });
 
@@ -166,6 +189,15 @@ describe('Percent Samll Decrement', () => {
       ];
       expect(isPercentSmallDecrementAllowed(billTotal, shares, 1)).toBe(false);
     });
+    test('change amt too small to (0.1% would round to less than 1 cent)', () => {
+      const billTotal = "0.49";
+      const shares = [
+        new Share("0.05"),
+        new Share("0.39", true),
+        new Share("0.05")
+      ];
+      expect(isPercentSmallDecrementAllowed(billTotal, shares, 1)).toBe(false);
+    })
   });
 });
 
@@ -188,6 +220,15 @@ describe('Percent Large Decrement', () => {
         new Share("99.00"),
         new Share("2.00", true),
         new Share("99.00")
+      ];
+      expect(isPercentLargeDecrementAllowed(billTotal, shares, 1)).toBe(false);
+    });
+    test('1% of total bill would be less than 1 cent', () => {
+      const billTotal = "0.49";
+      const shares = [
+        new Share("0.01"),
+        new Share("0.47", true),
+        new Share("0.01")
       ];
       expect(isPercentLargeDecrementAllowed(billTotal, shares, 1)).toBe(false);
     });
