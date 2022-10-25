@@ -48,7 +48,7 @@ export const isDollarSmallDecrementAllowed = function (shares, shareIndex) {
 }
 
 export const isDollarLargeDecrementAllowed = function (shares, shareIndex) {
-  const isNotAllowed = numStringToFloat(shares[shareIndex].shareAmountText || shares[shareIndex].shareAmount) <= 1;
+  const isNotAllowed = numStringToFloat(shares[shareIndex].shareAmountText || shares[shareIndex].shareAmount || shares[shareIndex].shareAmountNum) <= 1;
   shares[shareIndex].dollarLargeDecrementAllowed = !isNotAllowed;
   return shares[shareIndex].dollarLargeDecrementAllowed;
 }
