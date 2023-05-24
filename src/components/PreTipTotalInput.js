@@ -30,11 +30,11 @@ const PreTipTotalInput = props => {
   return (
     <View style={styles.row}>
       <View>
-        <Text style={styles.dollarSign}>$</Text>
+        <Text style={styles.dollarSign}>Pre-Tip Amount ($)</Text>
       </View>
       <View style={styles.inputWrap}>
         <TextInput
-          placeholder="preTipTotalInput"
+          placeholder="0.00"
           placeholderTextColor="white"
           value={props.preTipTotal}
           onChangeText={inputChangeEventHandler}
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   dollarSign: {
     display: 'inline',
-    marginRight: '2px',
+    marginRight: '5px',
     float: 'left',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     color: '#ffffff'
