@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TextInput, StyleSheet } from 'react-native';
+import { Text, TextInput, StyleSheet, View } from 'react-native';
 import { BILL_TOTAL_MANUAL_UPDATE, FORMAT, UPDATE_PRE_TIP_FROM_BILL_TOTAL, TIP_PERCENTAGE_BILL_UPDATE, TIP_TOTAL_AUTO_UPDATE, TIP_TOTAL_BILL_UPDATE, SHARES_VIEW_UPDATE_FROM_NEW_BILL_TOTAL } from './actions';
 
 const mapStateToProps = (state) => {
@@ -53,24 +53,39 @@ const BillInput = props => {
   }
 
   return (
-    <TextInput
-      value={props.totalBill}
-      keyboardType='numeric'
-      onChangeText={inputChangeEventHandler}
-      onBlur={blurEventHandler}
-      placeHolder="0.00"
-      placeholderTextColor="#ff00ff"
-      style={styles.input}
-      editable={editableBill}
-    />
+    <View style={styles.row}>
+      <Text style={styles.billTotalText}>
+        Bill Total ($)
+      </Text>
+      <TextInput
+        value={props.totalBill}
+        keyboardType='numeric'
+        onChangeText={inputChangeEventHandler}
+        onBlur={blurEventHandler}
+        placeHolder="0.00"
+        placeholderTextColor="#ff00ff"
+        style={styles.input}
+        editable={editableBill}
+      />
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  row: {
+    // flex: 1,
+    flexDirection: 'row'
+  },
   input: {
     textAlign: 'right',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     color: 'white'
+  },
+  billTotalText: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'white',
+    marginLeft: '2px',
+    marginRight: '5px'
   }
 })
 

@@ -30,6 +30,7 @@ const TipPercentage = props => {
 
   return (
     <View testID="tipPercentageComponent" style={styles.row}>
+    <Text style={styles.percentSymbol}>Tip Percentage (%)</Text>
       <TextInput
         style={styles.tipPercentage}
         value={props.tipPercentage}
@@ -37,7 +38,6 @@ const TipPercentage = props => {
         onChangeText={inputChangeEventHandler}
         editable={editableBill}
       />
-      <Text style={styles.percentSymbol}>%</Text>
     </View>
   )
 }
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     borderColor: "#cccccc",
     borderBottomWidth: 1,
-    marginLeft: '20px',
+    marginLeft: '5px',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     color: 'white'
   },
